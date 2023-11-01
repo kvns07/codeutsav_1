@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'display/display.dart';
@@ -67,7 +69,8 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
           try {
             await _initializeControllerFuture;
             final image = await _controller.takePicture();
-            uploadFile(image.path);
+            // uploadFile(image.path);
+            upload(File(image.path));
             // Navigate to a new screen to display the captured image
             // Navigator.push(
             //   context,

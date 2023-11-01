@@ -14,7 +14,6 @@ class _waitingState extends State<waiting> {
   bool fl=true;
   void initState() {
     super.initState();
-    uploadFile(global.imagePath??'assets/safe.jpg');
     setState(() {
       fl=global.fl;
     });
@@ -27,7 +26,6 @@ class _waitingState extends State<waiting> {
     else return Text(global.text);
   }
 }
-
 
 class LoadingWidget extends StatelessWidget {
   @override

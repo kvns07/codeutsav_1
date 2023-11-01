@@ -13,7 +13,7 @@ Future<void> upload(File imageFile) async {
   var length = await imageFile.length();
 
   // string to uri
-  var uri = Uri.parse("http://172.22.129.175:5000/upload");
+  var uri = Uri.parse("http://172.22.128.246:5000/upload");
 
   // create multipart request
   var request = new http.MultipartRequest("POST", uri);
@@ -23,6 +23,8 @@ Future<void> upload(File imageFile) async {
       filename: basename(imageFile.path));
 
   // add file to multipart
+  request.fields['lat'] = '${global.lat}';
+  request.fields['lon'] = '${global.lon}';
   request.files.add(multipartFile);
 
   // send
@@ -31,38 +33,13 @@ Future<void> upload(File imageFile) async {
 
   // listen for response
   response.stream.transform(utf8.decoder).listen((value) {
+    Map<String, dynamic> jsonMap = json.decode(value);
+    String fl=jsonMap['pothole'];
+    if(fl=='true') global.fl=true;
+    else global.fl=false;
+    print(fl);
     print(value);
   });
-}
-Future<void> uploadFile(String imagePath) async {
-  final Uri url = Uri.parse('http://172.22.129.175:5000/upload'); // Replace with your backend endpoint.
-  final imageBytes = File(imagePath).readAsBytesSync();
-  final mimeTypeData = lookupMimeType(imagePath);
-  final multipartFile = http.MultipartFile.fromBytes(
-    'file',
-    imageBytes,
-    contentType: MediaType.parse(mimeTypeData!),
-  );
-
-  final request = http.MultipartRequest('POST', url);
-  request.fields['description'] = 'A description for the uploaded file';
-  request.files.add(multipartFile);
-
-  final streamedResponse = await request.send();
-  final response = await http.Response.fromStream(streamedResponse);
-
-  if (response.statusCode == 200) {
-    // If the server returns a 200 OK response, parse the JSON data
-    print('hehe');
-    final data = json.decode(response.body);
-    global.fl=true;
-    global.text=data;
-    return data;
-  } else {
-    // If the server did not return a 200 OK response, throw an exception
-    global.fl=false;
-    throw Exception('Failed to load data');
-  }
 }
 // Future<void> sendImage() async{
 //   final uri = Uri.parse('https://myendpoint.com');
