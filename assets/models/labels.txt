@@ -1,0 +1,3 @@
+0 pothole
+1 obviousPothole
+2 notsopothole
