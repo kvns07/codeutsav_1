@@ -14,6 +14,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  int _currentIndex = 0;
   // @override
   // void initState() {
   //   initializeCamera();
@@ -51,6 +52,26 @@ class _HomeState extends State<Home> {
             ),
             child: Text("Take Photo", style: TextStyle(fontSize: 18)),
           ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (int index) {
+          // Handle navigation or switching between tabs here
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.camera),
+            label: 'Camera',
+          ),
+          // Add more items as needed
         ],
       ),
     );
