@@ -4,16 +4,17 @@ import 'package:codeutsav_1/model/gloabal.dart';
 import 'package:http/http.dart' as http;
 import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:codeutsav_1/display/dialog.dart';
 import 'package:path/path.dart';
 import 'package:async/async.dart';
-Future<void> upload(File imageFile) async {
+Future<String> upload(File imageFile) async {
   // open a bytestream
   var stream = new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
   // get file length
   var length = await imageFile.length();
 
   // string to uri
-  var uri = Uri.parse("http://172.22.128.246:5000/upload");
+  var uri = Uri.parse("http://172.22.130.141:5000/upload");
 
   // create multipart request
   var request = new http.MultipartRequest("POST", uri);
@@ -32,14 +33,25 @@ Future<void> upload(File imageFile) async {
   print(response.statusCode);
 
   // listen for response
+  String ret="";
   response.stream.transform(utf8.decoder).listen((value) {
-    Map<String, dynamic> jsonMap = json.decode(value);
+    Map<dynamic, dynamic> jsonMap = json.decode(value);
     String fl=jsonMap['pothole'];
-    if(fl=='true') global.fl=true;
-    else global.fl=false;
-    print(fl);
-    print(value);
+
+    if(fl=="true"){
+      print('bhai ye toh hai');
+      global.fl=true;
+      global.text="Pothole not yet filled";
+    }
+    else if(fl=="false") {
+      global.fl=false;
+      global.text="Pothole filled successfully";
+    }
+      print(global.text);
+      print(value);
+
   });
+  return ret;
 }
 // Future<void> sendImage() async{
 //   final uri = Uri.parse('https://myendpoint.com');

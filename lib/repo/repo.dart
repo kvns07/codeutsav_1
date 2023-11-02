@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:resume/model/gloabal.dart';
+import 'package:codeutsav_1/model/gloabal.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:resume/tools/mindist.dart';
+// import 'package:resume/tools/mindist.dart';
 import 'package:geolocator/geolocator.dart';
 Future fetchData() async {
   final response = await http.get(Uri.parse('https://vigyan-backend.onrender.com/'));

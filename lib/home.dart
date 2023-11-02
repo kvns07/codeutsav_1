@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:flutter/material.dart';
@@ -5,78 +7,6 @@ import 'package:camera/camera.dart';
 import 'display/display.dart';
 import 'repo/post.dart';
 import 'package:codeutsav_1/main.dart';
-
-class Home extends StatefulWidget {
-  const Home({super.key});
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  int _currentIndex = 0;
-  // @override
-  // void initState() {
-  //   initializeCamera();
-  //   super.initState();
-  // }
-
-  // initializeCamera() async{
-  //   final cameras = await availableCameras();
-  //   final firstCamera = cameras.first;
-  // }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Home Page")),
-      body: Column(
-        children: [
-          ElevatedButton(
-            onPressed: () async {
-              // Add your logic for taking a photo here
-              final cameras = await availableCameras();
-              final firstCamera = cameras.first;
-              TakePictureScreen(
-                camera: firstCamera,
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              primary: Colors.blue, // Background color
-              onPrimary: Colors.white, // Text color
-              padding: EdgeInsets.all(16.0), // Button padding
-              shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(8.0), // Button border radius
-              ),
-            ),
-            child: Text("Take Photo", style: TextStyle(fontSize: 18)),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (int index) {
-          // Handle navigation or switching between tabs here
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.camera),
-            label: 'Camera',
-          ),
-          // Add more items as needed
-        ],
-      ),
-    );
-  }
-}
 
 class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
@@ -129,7 +59,7 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
           try {
             await _initializeControllerFuture;
             final image = await _controller.takePicture();
-            uploadFile(image.path);
+            upload(File(image.path));
             // Navigate to a new screen to display the captured image
             // Navigator.push(
             //   context,

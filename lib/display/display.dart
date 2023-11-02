@@ -5,32 +5,66 @@ import 'dart:io';
 import 'package:codeutsav_1/display/waiting.dart';
 import 'package:codeutsav_1/model/gloabal.dart';
 import 'package:flutter/material.dart';
+import 'package:codeutsav_1/model/appbar.dart';
 
-class DisplayPictureScreen extends StatelessWidget {
+class DisplayPictureScreen extends StatefulWidget {
   final String imagePath;
 
   const DisplayPictureScreen({Key? key, required this.imagePath}) : super(key: key);
+
   @override
+  State<DisplayPictureScreen> createState() => _DisplayPictureScreenState();
+}
+
+class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
+  @override
+  int _selectedIndex = 0;
   Widget build(BuildContext context) {
-    global.imagePath=imagePath;
+    global.imagePath=widget.imagePath;
     return Scaffold(
-      appBar: AppBar(title: Text('Captured Picture')),
+      backgroundColor: Colors.blue,
+      appBar: CustomAppBar2(title: "Work Authenticator",),
       body:Column(
         children: <Widget>[
           Expanded(
-            flex: 5,
-            child:Image.file(File(imagePath)),
+            flex: 4,
+            child:Image.file(File(widget.imagePath)),
           ),
-          Text('wait for result'),
-          SizedBox(height: 30,),
+          // Text('wait for result'),
+          SizedBox(height: 10,),
           Container(
-            width: 50.0, // Set the width of the circular loading indicator
-            height: 50.0, // Set the height of the circular loading indicator
+            width: 250.0, // Set the width of the circular loading indicator
+            height: 80.0, // Set the height of the circular loading indicator
             child: waiting(),
           ),
-          SizedBox(height: 30,),
+          SizedBox(height: 40,),
         ],
-      )
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+      backgroundColor: Colors.grey,
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.camera_alt),
+          label: 'Take Picture',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.photo),
+          label: 'Gallery',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: 'Settings',
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      onTap: (index) {
+        setState(() {
+          _selectedIndex = index;
+          // Handle navigation to different tabs here
+          // You can use a Navigator or show/hide different content based on the index.
+        });
+      },
+    ),
       // body:Image.file(File(imagePath)),
     );
   }
